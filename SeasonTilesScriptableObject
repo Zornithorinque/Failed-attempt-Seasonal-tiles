@@ -1,0 +1,65 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Tilemaps;
+using UnityEditor;
+
+namespace UnityEngine.Tilemaps
+{
+    [CreateAssetMenu(fileName = "New Seasonal Tile", menuName = "Tiles/Seasonal Tile")]
+    public class SeasonalTile : Tile
+    {
+        public Sprite Spring;
+        public Sprite Summer;
+        public Sprite Fall;
+        public Sprite Winter;
+
+        public Season Season;
+
+        public Sprite currentSprite;
+        
+        private Sprite newSprite;
+        private Tile.ColliderType m_TileColliderType;
+        public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
+        {
+            tileData.transform = Matrix4x4.identity;
+            tileData.color = Color.white;
+            tileData.sprite = currentSprite;
+            tileData.colliderType = m_TileColliderType;
+            
+        }
+        public void SwitchSprite()
+        {
+            if (Season.currentSeason != Season.nextSeason)
+            {
+                Debug.Log("3");
+                if (Season.nextSeason == 0)
+                {
+                    newSprite = Spring;
+                }
+                if (Season.nextSeason == 1)
+                {
+                    newSprite = Summer;
+                    Debug.Log("4");
+                }
+                if (Season.nextSeason == 2)
+                {
+                    newSprite = Fall;
+                }
+                if (Season.nextSeason == 3)
+                {
+                    newSprite = Winter;
+                }
+                currentSprite= newSprite;
+
+            }
+            else
+            {
+            } 
+
+        }
+    }
+
+}
+
+
+   
