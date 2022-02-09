@@ -1,0 +1,55 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Tilemaps;
+
+public class SeasonManager : MonoBehaviour
+{
+    private Tilemap tilemap;
+    public Season Season;
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        tilemap = GameObject.FindWithTag("Level").GetComponent<Tilemap>();
+        Season.currentSeason = Season.levelStartingSeason;
+        Season.nextSeason = Season.levelStartingSeason;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Season.currentSeason != Season.nextSeason)
+        {
+            ChangeSprite();
+
+        }
+
+    }
+
+    private void ChangeSprite()
+    {
+        BoundsInt bounds = tilemap.cellBounds;
+        bool updated = false;
+
+        foreach (Vector3Int pos in bounds.allPositionsWithin)
+        {
+            TileBase tile = tilemap.GetTile(pos);
+            Debug.Log("5");
+            if (tile && tile is SeasonalTile)
+            {
+                Debug.Log("2");
+                if (!updated)
+                {
+                    ((SeasonalTile)tile).SwitchSprite();
+                    
+                }
+                tilemap.RefreshTile(pos);
+                Season.currentSeason = Season.nextSeason;
+
+            }
+        }
+    }
+}
